@@ -1,31 +1,14 @@
-import { splitTicketBlocks, extractField } from './parserUtils';
+import { splitTicketBlocks, extractField, sanitizeStatus } from './parserUtils';
 import { getIndonesianDate } from '../utils/dateUtils';
 import { buildRow } from '../utils/validation';
 
+/**
+ * Merapikan nama pelanggan tanpa mengubah case atau kata aslinya.
+ */
 export function cleanCustomerName(rawName) {
   if (!rawName) return '';
-
-  let name = rawName.trim();
-
-  // Hapus prefix regional di awal (misal: JKT-, JATIM-, SBS-, dll.)
-  name = name.replace(/^[A-Z0-9]+-(?=[A-Za-z])/i, '');
-
-  // Hapus suffix router/CPE (misal: -RB2011-CPE-01, -RB951, dll.)
-  name = name.replace(/-(?:RB\w+|CCR\w+|CPE[-\w]*|ROUTER|SW|SWITCH)[-\w]*$/i, '');
-  name = name.replace(/-CPE-\d+$/i, '');
-
-  // Ganti pemisah dot/underscore jadi spasi
-  name = name.replace(/[._]+/g, ' ');
-  name = name.replace(/\s+/g, ' ').trim();
-
-  return name
-    .toLowerCase()
-    .split(' ')
-    .map((word) => {
-      if (word.length === 0) return '';
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    })
-    .join(' ');
+  // Cukup bersihkan tab liar dan rapikan spasi berlebih
+  return rawName.replace(/[\t\r\n]+/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
 export function parsePublikTickets(rawText, shift = 'siang') {
@@ -41,7 +24,7 @@ export function parsePublikTickets(rawText, shift = 'siang') {
     const ticketNum = index + 1;
     const warningsForThisTicket = [];
 
-    // ID Tiket
+    // 1. ID Tiket
     const ticketId = extractField(block, 'ID\\s*TIKET') || '';
     const ticketLabel = ticketId ? `Tiket ${ticketId}` : `Tiket #${ticketNum}`;
 
@@ -49,40 +32,43 @@ export function parsePublikTickets(rawText, shift = 'siang') {
       warningsForThisTicket.push('ID TIKET kosong');
     }
 
-    // SID
+    // 2. SID
     const sid = extractField(block, 'SID(?:\\s*IBBC|\\s*IPVPN)?') || '';
     if (!sid) {
       warningsForThisTicket.push('SID tidak ditemukan');
     }
 
-    // Nama Pelanggan
-    const customerRaw = extractField(block, 'NAMA\\s*PELANGGAN') || extractField(block, 'PELANGGAN') || '';
-    const customerClean = cleanCustomerName(customerRaw);
-    if (!customerClean) {
+    // 3. Nama Pelanggan (sesuai input mentah)
+    const customerRaw =
+      extractField(block, 'NAMA\\s*PELANGGAN') ||
+      extractField(block, 'PELANGGAN') ||
+      '';
+    const customerName = cleanCustomerName(customerRaw);
+    if (!customerName) {
       warningsForThisTicket.push('NAMA PELANGGAN kosong');
     }
 
-    // Pengecekan bila ada (opsional, tanpa warning)
-    const cpe = extractField(block, 'Pengecekan\\s*CPE') || '';
-    const spe = extractField(block, 'Pengecekan\\s*SPE') || '';
-    const upe = extractField(block, 'Pengecekan\\s*UPE') || '';
+    // 4. Pengecekan status
+    const cpe = sanitizeStatus(extractField(block, 'Pengecekan\\s*CPE'));
+    const spe = sanitizeStatus(extractField(block, 'Pengecekan\\s*SPE'));
+    const upe = sanitizeStatus(extractField(block, 'Pengecekan\\s*UPE'));
 
     // Struktur 14 Kolom PUBLIK
     const rowCells = [
-      sid,                              // 1: SID
-      customerClean,                    // 2: Nama Pelanggan Bersih
-      'Termonitor perangkat down',      // 3: Status
-      '',                               // 4
-      '',                               // 5
-      '',                               // 6
-      '',                               // 7
-      cpe,                              // 8: CPE
-      spe,                              // 9: SPE
-      upe,                              // 10: UPE
-      '',                               // 11
-      ticketId,                         // 12: ID Tiket
-      shift,                            // 13: Shift
-      currentDate                       // 14: Tanggal
+      sid,                              // Col 1: SID
+      customerName,                     // Col 2: Nama Pelanggan
+      'Termonitor perangkat down',      // Col 3: Status
+      '',                               // Col 4
+      '',                               // Col 5
+      '',                               // Col 6
+      '',                               // Col 7
+      cpe,                              // Col 8: CPE
+      spe,                              // Col 9: SPE
+      upe,                              // Col 10: UPE
+      '',                               // Col 11
+      ticketId,                         // Col 12: ID Tiket
+      shift,                            // Col 13: Shift
+      currentDate                       // Col 14: Tanggal
     ];
 
     try {
@@ -92,7 +78,7 @@ export function parsePublikTickets(rawText, shift = 'siang') {
       results.push({
         id: ticketLabel,
         sid,
-        nama: customerClean,
+        nama: customerName,
         ticketId,
         shift,
         date: currentDate,
