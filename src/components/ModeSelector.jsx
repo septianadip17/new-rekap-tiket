@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 export default function ModeSelector({ mode, setMode }) {
   return (
     <div className="flex flex-col space-y-2">

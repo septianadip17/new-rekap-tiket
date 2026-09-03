@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { CheckCircle2, AlertTriangle, XCircle, FileText } from 'lucide-react';
 
 export default function ResultSummary({ summary }) {

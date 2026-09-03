@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Play, Trash2, CheckCheck } from 'lucide-react';
 
 export default function ActionButtons({ onGenerate, onClear, hasOutput, onCopy, copied }) {

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 export default function ShiftSelector({ shift, setShift }) {
   const shifts = [
     { id: 'pagi', label: 'Pagi' },

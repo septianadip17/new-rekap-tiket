@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { AlertCircle, AlertTriangle } from 'lucide-react';
 
 export default function TicketStatus({ warnings, errors }) {

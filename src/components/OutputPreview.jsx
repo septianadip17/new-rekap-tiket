@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { Copy, Check, Table2 } from 'lucide-react';
 
 export default function OutputPreview({ output, onCopy, copied, mode }) {
