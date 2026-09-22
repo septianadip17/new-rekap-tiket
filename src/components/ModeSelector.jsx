@@ -15,7 +15,7 @@ export default function ModeSelector({ mode, setMode }) {
               : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/50"
           }`}
         >
-          <span>ALFA (14 KOLOM)</span>
+          <span>ALFA</span>
         </button>
         <button
           type="button"
@@ -26,7 +26,7 @@ export default function ModeSelector({ mode, setMode }) {
               : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/50"
           }`}
         >
-          <span>INDOMARCO (14 KOLOM)</span>
+          <span>INDOMARCO</span>
         </button>
         <button
           type="button"
@@ -37,7 +37,7 @@ export default function ModeSelector({ mode, setMode }) {
               : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/50"
           }`}
         >
-          <span>PUBLIK (14 KOLOM)</span>
+          <span>PUBLIK</span>
         </button>
       </div>
     </div>
