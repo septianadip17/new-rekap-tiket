@@ -71,7 +71,7 @@ export function parseIndomarcoTickets(rawText, shift = "siang") {
       sid, // 1: SID
       namaIndomarco, // 2: Nama Indomarco
       "", // 3: kosong
-      "Termonitor perangkat down", // 4: status
+      "", // 4: status
       "aktif", // 5: aktif
       "", // 6: kosong
       "", // 7: kosong
