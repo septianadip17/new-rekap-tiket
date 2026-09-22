@@ -7,12 +7,12 @@ export default function TicketStatus({ warnings, errors }) {
   return (
     <div className="flex flex-col gap-3 animate-fade-up">
       {errors.length > 0 && (
-        <div className="rounded-xl border border-rose-200 bg-rose-50 p-4">
-          <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-rose-700">
+        <div className="rounded-xl border border-rose-500/25 bg-rose-500/5 p-4">
+          <div className="mb-2 flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-rose-400">
             <AlertCircle className="h-4 w-4" />
-            Error ({errors.length})
+            error &bull; {errors.length}
           </div>
-          <ul className="list-inside list-disc space-y-1 text-xs text-rose-600">
+          <ul className="list-inside list-disc space-y-1 font-mono text-xs text-rose-300/80">
             {errors.map((err, idx) => (
               <li key={idx}>{err}</li>
             ))}
@@ -21,16 +21,16 @@ export default function TicketStatus({ warnings, errors }) {
       )}
 
       {warnings.length > 0 && (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
-          <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-amber-700">
+        <div className="rounded-xl border border-amber-500/25 bg-amber-500/5 p-4">
+          <div className="mb-2 flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-amber-400">
             <AlertTriangle className="h-4 w-4" />
-            Data tidak lengkap ({warnings.length})
+            data_tidak_lengkap &bull; {warnings.length}
           </div>
-          <ul className="space-y-1.5 text-xs text-amber-700">
+          <ul className="space-y-1.5 font-mono text-xs text-slate-400">
             {warnings.map((w, idx) => (
               <li key={idx} className="flex items-start gap-2">
-                <span className="font-mono font-semibold text-amber-800">[{w.ticket}]</span>
-                <span className="text-slate-600">{w.messages.join(', ')}</span>
+                <span className="font-semibold text-amber-300">[{w.ticket}]</span>
+                <span>{w.messages.join(', ')}</span>
               </li>
             ))}
           </ul>

@@ -140,23 +140,30 @@ export default function App() {
   };
 
   return (
-    <div className="relative min-h-screen">
-      <div className="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]" />
+    <div className="relative min-h-screen overflow-hidden">
+      {/* ambient background */}
+      <div className="pointer-events-none absolute inset-0 bg-grid-fade bg-grid [mask-image:radial-gradient(ellipse_at_top,black,transparent_75%)]" />
+      <div className="pointer-events-none absolute -left-40 -top-40 h-96 w-96 rounded-full bg-cyan-500/10 blur-[120px]" />
+      <div className="pointer-events-none absolute -right-40 top-20 h-96 w-96 rounded-full bg-violet-500/10 blur-[120px]" />
 
       <div className="relative mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <Header />
 
-        <main className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1.05fr_1fr]">
-          {/* Kolom kiri - input */}
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-card">
-            <div className="mb-5 flex items-center justify-between border-b border-slate-100 pb-4">
+        <main className="space-y-6">
+          {/* Panel Input */}
+          <section className="glass rounded-2xl border border-edge p-5 shadow-panel sm:p-6">
+            <div className="mb-5 flex items-center justify-between border-b border-edge pb-4">
               <div className="flex items-center gap-2.5">
-                <span className="flex h-6 w-6 items-center justify-center rounded-md bg-slate-900 text-[11px] font-semibold text-white">
-                  1
+                <span className="flex h-6 w-6 items-center justify-center rounded-md border border-cyan-400/30 bg-cyan-400/10 font-mono text-[11px] font-bold text-cyan-300">
+                  01
                 </span>
-                <span className="text-sm font-semibold text-slate-900">Input</span>
+                <span className="font-mono text-xs font-semibold uppercase tracking-[0.15em] text-slate-300">
+                  input
+                </span>
               </div>
-              <span className="text-xs text-slate-400">Sumber &amp; data mentah</span>
+              <span className="hidden font-mono text-[11px] text-slate-600 sm:block">
+                struktur_data
+              </span>
             </div>
 
             <div className="space-y-5">
@@ -168,16 +175,16 @@ export default function App() {
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="report-date"
-                    className="text-xs font-medium text-slate-500"
+                    className="font-mono text-[11px] uppercase tracking-[0.15em] text-slate-500"
                   >
-                    Tanggal rekap
+                    // tanggal_rekap
                   </label>
                   <input
                     id="report-date"
                     type="date"
                     value={reportDate}
                     onChange={(e) => setReportDate(e.target.value)}
-                    className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 font-mono text-sm text-slate-700 outline-none transition focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/10"
+                    className="w-full rounded-xl border border-edge bg-void/70 px-4 py-2.5 font-mono text-sm text-slate-300 outline-none transition focus:border-cyan-400/40 focus:shadow-glow"
                   />
                 </div>
               </div>
@@ -185,7 +192,7 @@ export default function App() {
               <RawInput
                 rawText={rawText}
                 setRawText={setRawText}
-                placeholder={`Paste tiket ${mode} di sini...`}
+                placeholder={`Paste tiket ${mode} di sini (mendukung multiple tickets)...`}
               />
 
               <ActionButtons
@@ -198,16 +205,18 @@ export default function App() {
             </div>
           </section>
 
-          {/* Kolom kanan - review */}
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-card lg:sticky lg:top-6">
-            <div className="mb-5 flex items-center justify-between border-b border-slate-100 pb-4">
+          {/* Panel Review */}
+          <section className="glass rounded-2xl border border-edge p-5 shadow-panel sm:p-6">
+            <div className="mb-5 flex items-center justify-between border-b border-edge pb-4">
               <div className="flex items-center gap-2.5">
-                <span className="flex h-6 w-6 items-center justify-center rounded-md bg-slate-900 text-[11px] font-semibold text-white">
-                  2
+                <span className="flex h-6 w-6 items-center justify-center rounded-md border border-violet-400/30 bg-violet-400/10 font-mono text-[11px] font-bold text-violet-300">
+                  02
                 </span>
-                <span className="text-sm font-semibold text-slate-900">Review</span>
+                <span className="font-mono text-xs font-semibold uppercase tracking-[0.15em] text-slate-300">
+                  review
+                </span>
               </div>
-              <span className="font-mono text-xs text-slate-400">
+              <span className="font-mono text-[11px] tabular-nums text-slate-600">
                 {reportDate.split('-').reverse().join('.')}
               </span>
             </div>
@@ -217,13 +226,15 @@ export default function App() {
               <TicketStatus warnings={warnings} errors={errors} />
 
               {!output && (!summary || summary.total === 0) && (
-                <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-slate-50/60 px-6 py-14 text-center">
-                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm">
-                    <Table2 className="h-4 w-4 text-slate-400" />
+                <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-xl border border-dashed border-edge bg-void/40 px-6 py-16 text-center">
+                  <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl border border-cyan-400/25 bg-cyan-400/5 text-cyan-400">
+                    <Table2 className="h-4 w-4" />
                   </div>
-                  <p className="text-sm text-slate-500">Belum ada hasil</p>
-                  <p className="mt-1 text-xs text-slate-400">
-                    Paste tiket di kolom Input lalu klik Generate
+                  <p className="font-mono text-xs text-slate-400">
+                    awaiting_input...
+                  </p>
+                  <p className="mt-1 font-mono text-[11px] text-slate-600">
+                    paste tiket di panel 01 lalu generate
                   </p>
                 </div>
               )}
@@ -238,8 +249,9 @@ export default function App() {
           </section>
         </main>
 
-        <footer className="mt-10 border-t border-slate-200 pt-5 text-center text-xs text-slate-400">
-          Semua proses berjalan di browser &bull; data tidak dikirim ke server
+        <footer className="mt-10 flex items-center justify-center gap-2 border-t border-edge pt-5 font-mono text-[11px] uppercase tracking-[0.15em] text-slate-600">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+          in-memory pipeline &bull; data tidak keluar browser
         </footer>
       </div>
     </div>

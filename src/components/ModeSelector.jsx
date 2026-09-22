@@ -1,29 +1,34 @@
 /* eslint-disable react/prop-types */
 const MODES = [
-  { id: 'ALFA', label: 'Alfa' },
-  { id: 'INDOMARCO', label: 'Indomarco' },
-  { id: 'PUBLIK', label: 'Publik' },
+  { id: 'ALFA', label: 'ALFA' },
+  { id: 'INDOMARCO', label: 'INDOMARCO' },
+  { id: 'PUBLIK', label: 'PUBLIK' },
 ];
 
 export default function ModeSelector({ mode, setMode }) {
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-xs font-medium text-slate-500">Mode sumber tiket</label>
-      <div className="inline-flex rounded-lg border border-slate-200 bg-slate-100 p-0.5">
-        {MODES.map((m) => (
-          <button
-            key={m.id}
-            type="button"
-            onClick={() => setMode(m.id)}
-            className={`flex-1 rounded-[7px] px-3 py-1.5 text-sm font-medium transition-all ${
-              mode === m.id
-                ? 'bg-white text-slate-900 shadow-sm'
-                : 'text-slate-500 hover:text-slate-800'
-            }`}
-          >
-            {m.label}
-          </button>
-        ))}
+      <label className="font-mono text-[11px] uppercase tracking-[0.15em] text-slate-500">
+        // mode_sumber
+      </label>
+      <div className="grid grid-cols-3 gap-1.5 rounded-xl border border-edge bg-void/60 p-1.5">
+        {MODES.map((m) => {
+          const active = mode === m.id;
+          return (
+            <button
+              key={m.id}
+              type="button"
+              onClick={() => setMode(m.id)}
+              className={`rounded-lg px-2 py-2 font-mono text-[11px] font-semibold transition-all active:scale-[0.96] ${
+                active
+                  ? 'bg-cyan-500/15 text-cyan-300 shadow-glow'
+                  : 'text-slate-500 hover:bg-panel2 hover:text-slate-300'
+              }`}
+            >
+              {m.label}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

@@ -11,26 +11,47 @@ export default {
         mono: ['"JetBrains Mono"', 'monospace'],
       },
       colors: {
-        brand: {
-          50: '#eef2ff',
-          100: '#e0e7ff',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
+        void: '#05060a',
+        panel: '#0b0e17',
+        panel2: '#0f1320',
+        edge: 'rgba(148, 163, 184, 0.12)',
+        cyan: {
+          400: '#22d3ee',
+          500: '#06b6d4',
+        },
+        violet: {
+          400: '#a78bfa',
+          500: '#8b5cf6',
         },
       },
       boxShadow: {
-        card: '0 1px 2px rgba(16,24,40,0.04), 0 4px 12px rgba(16,24,40,0.06)',
-        pop: '0 4px 16px rgba(16,24,40,0.10)',
+        glow: '0 0 0 1px rgba(34,211,238,0.15), 0 0 24px -4px rgba(34,211,238,0.25)',
+        panel: '0 24px 60px -24px rgba(0,0,0,0.8)',
+      },
+      backgroundImage: {
+        'grid-fade': 'linear-gradient(rgba(148,163,184,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,0.06) 1px, transparent 1px)',
+      },
+      backgroundSize: {
+        grid: '44px 44px',
       },
       keyframes: {
         'fade-up': {
-          '0%': { opacity: '0', transform: 'translateY(6px)' },
+          '0%': { opacity: '0', transform: 'translateY(8px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'pulse-glow': {
+          '0%, 100%': { opacity: '0.6' },
+          '50%': { opacity: '1' },
+        },
+        'scan': {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(100%)' },
         },
       },
       animation: {
-        'fade-up': 'fade-up 0.28s ease-out',
+        'fade-up': 'fade-up 0.35s ease-out',
+        'pulse-glow': 'pulse-glow 2.5s ease-in-out infinite',
+        'scan': 'scan 4s linear infinite',
       },
     },
   },

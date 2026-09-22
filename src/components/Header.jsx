@@ -1,32 +1,36 @@
-import { FileSpreadsheet } from 'lucide-react';
+import { Terminal, Zap, ShieldCheck } from 'lucide-react';
 
 export default function Header() {
   return (
-    <header className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between pb-8">
+    <header className="relative flex flex-col gap-5 pb-7 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-center gap-4">
-        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-900 text-white shadow-pop">
-          <FileSpreadsheet className="h-5 w-5" />
+        <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-400/30 bg-cyan-500/10 text-cyan-400 shadow-glow">
+          <Terminal className="h-5 w-5" />
+          <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-cyan-400 animate-pulse-glow" />
         </div>
         <div>
-          <h1 className="text-lg font-semibold tracking-tight text-slate-900">
-            Ticket Rekap Generator
-          </h1>
-          <p className="text-sm text-slate-500">
-            Ubah tiket alarm mentah jadi data siap Excel
+          <div className="flex items-center gap-2">
+            <h1 className="text-lg font-bold tracking-tight text-white">
+              TICKET<span className="text-gradient">REKAP</span>
+            </h1>
+            <span className="rounded-md border border-cyan-400/20 bg-cyan-400/5 px-1.5 py-0.5 font-mono text-[10px] font-medium text-cyan-400">
+              v1.0
+            </span>
+          </div>
+          <p className="mt-0.5 font-mono text-xs text-slate-500">
+            raw alarm &rarr; excel-ready pipeline
           </p>
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 shadow-sm">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-          Client-side
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="inline-flex items-center gap-1.5 rounded-lg border border-cyan-400/20 bg-cyan-400/5 px-2.5 py-1.5 font-mono text-[11px] text-cyan-300">
+          <Zap className="h-3 w-3" />
+          14 col
         </span>
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 shadow-sm">
-          14 kolom
-        </span>
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 shadow-sm">
-          Excel ready
+        <span className="inline-flex items-center gap-1.5 rounded-lg border border-violet-400/20 bg-violet-400/5 px-2.5 py-1.5 font-mono text-[11px] text-violet-300">
+          <ShieldCheck className="h-3 w-3" />
+          client-side
         </span>
       </div>
     </header>

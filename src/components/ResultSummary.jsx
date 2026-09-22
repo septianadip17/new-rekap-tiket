@@ -5,24 +5,28 @@ export default function ResultSummary({ summary }) {
   if (!summary || summary.total === 0) return null;
 
   const items = [
-    { label: 'Tiket diproses', value: summary.total, tone: 'text-slate-900', bg: 'bg-slate-100', Icon: Ticket },
-    { label: 'Berhasil', value: summary.success, tone: 'text-emerald-600', bg: 'bg-emerald-50', Icon: CheckCircle2 },
-    { label: 'Peringatan', value: summary.warning, tone: 'text-amber-600', bg: 'bg-amber-50', Icon: AlertTriangle },
-    { label: 'Error', value: summary.error, tone: 'text-rose-600', bg: 'bg-rose-50', Icon: XCircle },
+    { label: 'diproses', value: summary.total, Icon: Ticket, tone: 'text-cyan-300', ring: 'border-cyan-400/25 bg-cyan-400/5' },
+    { label: 'berhasil', value: summary.success, Icon: CheckCircle2, tone: 'text-emerald-400', ring: 'border-emerald-400/25 bg-emerald-400/5' },
+    { label: 'peringatan', value: summary.warning, Icon: AlertTriangle, tone: 'text-amber-400', ring: 'border-amber-400/25 bg-amber-400/5' },
+    { label: 'error', value: summary.error, Icon: XCircle, tone: 'text-rose-400', ring: 'border-rose-400/25 bg-rose-400/5' },
   ];
 
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-      {items.map(({ label, value, tone, bg, Icon }) => (
+      {items.map(({ label, value, tone, ring, Icon }) => (
         <div
           key={label}
-          className="rounded-xl border border-slate-200 bg-white p-3.5 shadow-card"
+          className={`rounded-xl border ${ring} p-3.5 backdrop-blur-sm`}
         >
-          <div className={`mb-2 inline-flex h-8 w-8 items-center justify-center rounded-lg ${bg}`}>
+          <div className="flex items-center justify-between">
             <Icon className={`h-4 w-4 ${tone}`} />
+            <span className={`font-mono text-2xl font-bold tabular-nums ${tone}`}>
+              {value}
+            </span>
           </div>
-          <div className={`text-2xl font-semibold tabular-nums ${tone}`}>{value}</div>
-          <div className="mt-0.5 text-xs text-slate-500">{label}</div>
+          <div className="mt-1.5 font-mono text-[10px] uppercase tracking-wider text-slate-500">
+            {label}
+          </div>
         </div>
       ))}
     </div>
