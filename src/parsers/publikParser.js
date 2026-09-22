@@ -59,7 +59,7 @@ export function parsePublikTickets(rawText, shift = 'siang') {
       customerName,                     // Col 2: Nama Pelanggan
       'Termonitor perangkat down',      // Col 3: Status
       '',                               // Col 4
-      '',                               // Col 5
+      'aktif',                               // Col 5
       '',                               // Col 6
       '',                               // Col 7
       cpe,                              // Col 8: CPE
