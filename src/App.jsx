@@ -145,11 +145,7 @@ export default function App() {
           <RawInput
             rawText={rawText}
             setRawText={setRawText}
-            placeholder={
-              mode === "ALFA"
-                ? "Paste tiket ALFA di sini (mendukung multiple tickets)..."
-                : "Paste tiket PUBLIK di sini (mendukung multiple tickets)..."
-            }
+            placeholder={`Paste tiket ${mode} di sini (mendukung multiple tickets)...`}
           />
 
           <ActionButtons
