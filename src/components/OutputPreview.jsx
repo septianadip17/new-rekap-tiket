@@ -8,43 +8,42 @@ export default function OutputPreview({ output, onCopy, copied, mode }) {
   const lines = output.trim().split('\n');
 
   return (
-    <div className="flex flex-col space-y-2 mt-4">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <Table2 className="w-4 h-4 text-cyan-400" />
-          <span className="text-xs font-bold uppercase tracking-widest text-slate-300">
-            Excel-Ready Output ({lines.length} Baris • TAB Separated)
+    <div className="flex flex-col gap-2 animate-fade-up">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
+          <Table2 className="h-4 w-4 text-brand-600" />
+          Output siap Excel
+          <span className="rounded-md bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] text-slate-500">
+            {lines.length} baris
           </span>
         </div>
         <button
           onClick={onCopy}
           type="button"
-          className="flex items-center space-x-1.5 px-3 py-1 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 rounded-lg text-xs font-mono transition-all"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-600 transition hover:bg-slate-50"
         >
           {copied ? (
             <>
-              <Check className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="text-emerald-400 font-bold">Copied!</span>
+              <Check className="h-3.5 w-3.5 text-emerald-500" />
+              <span className="text-emerald-600">Tersalin</span>
             </>
           ) : (
             <>
-              <Copy className="w-3.5 h-3.5" />
-              <span>Copy TSV</span>
+              <Copy className="h-3.5 w-3.5" />
+              Copy TSV
             </>
           )}
         </button>
       </div>
 
-      <div className="relative group">
-        <pre
-          tabIndex={0}
-          className="w-full bg-slate-950 p-4 rounded-xl border border-slate-800 text-[11px] font-mono text-emerald-400 overflow-x-auto whitespace-pre leading-relaxed focus:outline-none focus:border-cyan-500/50"
-        >
-          {output}
-        </pre>
-      </div>
-      <p className="text-[11px] text-slate-500 italic">
-        💡 Klik tombol Copy di atas, lalu langsung tekan Paste (Ctrl+V) di sel A1 Microsoft Excel atau Google Sheets.
+      <pre
+        tabIndex={0}
+        className="max-h-[420px] overflow-auto whitespace-pre rounded-xl border border-slate-200 bg-slate-900 p-4 font-mono text-[11px] leading-relaxed text-slate-100 focus:outline-none focus:ring-4 focus:ring-brand-500/20"
+      >
+        {output}
+      </pre>
+      <p className="text-[11px] text-slate-400">
+        Tekan Copy lalu paste di sel A1 Excel / Google Sheets.
       </p>
     </div>
   );

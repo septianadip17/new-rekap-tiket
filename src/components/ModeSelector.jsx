@@ -1,44 +1,29 @@
 /* eslint-disable react/prop-types */
+const MODES = [
+  { id: 'ALFA', label: 'Alfa' },
+  { id: 'INDOMARCO', label: 'Indomarco' },
+  { id: 'PUBLIK', label: 'Publik' },
+];
+
 export default function ModeSelector({ mode, setMode }) {
   return (
-    <div className="flex flex-col space-y-2">
-      <label className="text-xs font-bold uppercase tracking-widest text-slate-400">
-        Mode Aplikasi
-      </label>
-      <div className="grid grid-cols-2 p-1 bg-slate-950/80 rounded-xl border border-slate-800 backdrop-blur-md">
-        <button
-          type="button"
-          onClick={() => setMode("ALFA")}
-          className={`py-2 px-4 rounded-lg text-xs font-bold transition-all duration-200 tracking-wider flex items-center justify-center space-x-2 ${
-            mode === "ALFA"
-              ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30"
-              : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/50"
-          }`}
-        >
-          <span>ALFA</span>
-        </button>
-        <button
-          type="button"
-          onClick={() => setMode("INDOMARCO")}
-          className={`py-2 px-4 rounded-lg text-xs font-bold transition-all duration-200 tracking-wider flex items-center justify-center space-x-2 ${
-            mode === "INDOMARCO"
-              ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30"
-              : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/50"
-          }`}
-        >
-          <span>INDOMARCO</span>
-        </button>
-        <button
-          type="button"
-          onClick={() => setMode("PUBLIK")}
-          className={`py-2 px-4 rounded-lg text-xs font-bold transition-all duration-200 tracking-wider flex items-center justify-center space-x-2 ${
-            mode === "PUBLIK"
-              ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30"
-              : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/50"
-          }`}
-        >
-          <span>PUBLIK</span>
-        </button>
+    <div className="flex flex-col gap-2">
+      <label className="text-xs font-medium text-slate-500">Mode sumber tiket</label>
+      <div className="inline-flex rounded-lg border border-slate-200 bg-slate-100 p-0.5">
+        {MODES.map((m) => (
+          <button
+            key={m.id}
+            type="button"
+            onClick={() => setMode(m.id)}
+            className={`flex-1 rounded-[7px] px-3 py-1.5 text-sm font-medium transition-all ${
+              mode === m.id
+                ? 'bg-white text-slate-900 shadow-sm'
+                : 'text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            {m.label}
+          </button>
+        ))}
       </div>
     </div>
   );

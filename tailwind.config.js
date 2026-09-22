@@ -1,14 +1,3 @@
-// /** @type {import('tailwindcss').Config} */
-// export default {
-//   content: [ `./index.html`, `./src/**/*.{js,ts,jsx,tsx}`, ],
-//   theme: {
-//     extend: {},
-//   },
-//   plugins: [],
-// }
-
-
-
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -17,18 +6,32 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        cyber: {
-          dark: '#0a0d14',
-          card: 'rgba(17, 24, 39, 0.75)',
-          border: 'rgba(56, 189, 248, 0.2)',
-          accent: '#00f2fe',
-          neon: '#38bdf8'
-        }
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
       },
-      backdropBlur: {
-        xs: '2px',
-      }
+      colors: {
+        brand: {
+          50: '#eef2ff',
+          100: '#e0e7ff',
+          500: '#6366f1',
+          600: '#4f46e5',
+          700: '#4338ca',
+        },
+      },
+      boxShadow: {
+        card: '0 1px 2px rgba(16,24,40,0.04), 0 4px 12px rgba(16,24,40,0.06)',
+        pop: '0 4px 16px rgba(16,24,40,0.10)',
+      },
+      keyframes: {
+        'fade-up': {
+          '0%': { opacity: '0', transform: 'translateY(6px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        'fade-up': 'fade-up 0.28s ease-out',
+      },
     },
   },
   plugins: [],

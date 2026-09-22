@@ -1,29 +1,33 @@
-import { ShieldAlert, Terminal } from 'lucide-react';
+import { FileSpreadsheet } from 'lucide-react';
 
 export default function Header() {
   return (
-    <header className="relative flex flex-col md:flex-row items-center justify-between p-6 bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl mb-8 shadow-2xl shadow-cyan-950/20">
-      <div className="flex items-center space-x-4">
-        <div className="p-3 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/40 rounded-xl text-cyan-400">
-          <Terminal className="w-8 h-8 animate-pulse" />
+    <header className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between pb-8">
+      <div className="flex items-center gap-4">
+        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-900 text-white shadow-pop">
+          <FileSpreadsheet className="h-5 w-5" />
         </div>
         <div>
-          <div className="flex items-center space-x-2">
-            <h1 className="text-2xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400">
-              TICKET REKAP GENERATOR
-            </h1>
-            <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
-              v1.0
-            </span>
-          </div>
-          <p className="text-xs text-slate-400 mt-1 font-medium tracking-wide">
-            Convert raw alarm tickets into Excel-ready data • 14 Column Auto-Validator
+          <h1 className="text-lg font-semibold tracking-tight text-slate-900">
+            Ticket Rekap Generator
+          </h1>
+          <p className="text-sm text-slate-500">
+            Ubah tiket alarm mentah jadi data siap Excel
           </p>
         </div>
       </div>
-      <div className="mt-4 md:mt-0 flex items-center space-x-2 bg-slate-950/60 px-3 py-1.5 rounded-lg border border-slate-800 text-xs text-slate-400">
-        <ShieldAlert className="w-4 h-4 text-emerald-400" />
-        <span>100% Client-Side In-Memory Engine</span>
+
+      <div className="flex items-center gap-2">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 shadow-sm">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+          Client-side
+        </span>
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 shadow-sm">
+          14 kolom
+        </span>
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 shadow-sm">
+          Excel ready
+        </span>
       </div>
     </header>
   );
