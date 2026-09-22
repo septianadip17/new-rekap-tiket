@@ -1,16 +1,17 @@
-import { useState } from 'react';
-import Header from './components/Header';
-import ModeSelector from './components/ModeSelector';
-import ShiftSelector from './components/ShiftSelector';
-import RawInput from './components/RawInput';
-import ActionButtons from './components/ActionButtons';
-import ResultSummary from './components/ResultSummary';
-import TicketStatus from './components/TicketStatus';
-import OutputPreview from './components/OutputPreview';
+import { useState } from "react";
+import Header from "./components/Header";
+import ModeSelector from "./components/ModeSelector";
+import ShiftSelector from "./components/ShiftSelector";
+import RawInput from "./components/RawInput";
+import ActionButtons from "./components/ActionButtons";
+import ResultSummary from "./components/ResultSummary";
+import TicketStatus from "./components/TicketStatus";
+import OutputPreview from "./components/OutputPreview";
 
-import { parseAlfaTickets } from './parsers/alfaParser';
-import { parsePublikTickets } from './parsers/publikParser';
-import { copyToClipboard } from './utils/clipboard';
+import { parseAlfaTickets } from "./parsers/alfaParser";
+import { parsePublikTickets } from "./parsers/publikParser";
+import { parseIndomarcoTickets } from "./parsers/indomarcoParser";
+import { copyToClipboard } from "./utils/clipboard";
 
 const SAMPLE_ALFA = `INFORMASI : [ALARM PERANGKAT DOWN]
 SITE : BANDUNG-B997-MALAYU_SAMARANG
@@ -33,23 +34,34 @@ Pengecekan UPE : UP
 Pengecekan SPE : UP
 Pengecekan CPE : -`;
 
+const SAMPLE_INDOMARCO = `INFORMASI	 : [ALARM PERANGKAT DOWN]
+SITE		 : BALI-TFDH
+ALAMAT TERMINASI : BALI-MTRM.SELONG-ZYXEL.MGS3520-SPE-03	172.25.183.222	Interface e0/0/10
+SID IBBC	 : 111302004256
+TITIK KORDINAT 	 : -8.705354,116.502972
+KELUHAN 	 : TERMONITOR DOWN DARI LOG DC DAWUAN, CONNECTIVITY VIA FO DOWN, INDIKASI GANGGUAN FO DARI POP KE ARAH LAST MILE.
+ID TIKET	 : A0560219
+Pengecekan UPE	 :
+Pengecekan SPE	 : port link down
+Pengecekan CPE	 :`;
+
 const SAMPLE_PUBLIK = `TIKET 1
 INFORMASI : [ALARM PERANGKAT DOWN]
-NAMA PELANGGAN : JKT-ICONPLUS_VVIP_WAMEN_KOMDIGI
-SID : 333100021
-ID TIKET : IN3849102
+NAMA PELANGGAN : DINAS KOMUNIKASI DAN INFORMATIKA KAB. MUSI BANYUASIN
+SID : 211601004078
+ID TIKET : A0552342
 
 TIKET 2
 INFORMASI : [ALARM PERANGKAT DOWN]
-NAMA PELANGGAN : JATIM-DISKOMINFO.TUBAN.DESA.JETAK.MONTONG-RB2011-CPE-01
-SID IPVPN : 555200034
-ID TIKET : IN3849103`;
+NAMA PELANGGAN : SMK NEGERI 1 GUNUNG KIJANG
+SID : 02000291608
+ID TIKET : A0552343`;
 
 export default function App() {
-  const [mode, setMode] = useState('ALFA'); // 'ALFA' | 'PUBLIK'
-  const [shift, setShift] = useState('siang'); // 'pagi' | 'siang' | 'malam'
+  const [mode, setMode] = useState("ALFA"); // 'ALFA' | 'INDOMARCO' | 'PUBLIK'
+  const [shift, setShift] = useState("siang"); // 'pagi' | 'siang' | 'malam'
   const [rawText, setRawText] = useState(SAMPLE_ALFA);
-  const [output, setOutput] = useState('');
+  const [output, setOutput] = useState("");
   const [summary, setSummary] = useState(null);
   const [warnings, setWarnings] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -57,30 +69,40 @@ export default function App() {
 
   const handleModeChange = (newMode) => {
     setMode(newMode);
-    setOutput('');
+    setOutput("");
     setSummary(null);
     setWarnings([]);
     setErrors([]);
-    // Berikan template contoh sesuai mode jika textarea masih kosong atau berisi default
-    if (rawText === SAMPLE_ALFA && newMode === 'PUBLIK') {
-      setRawText(SAMPLE_PUBLIK);
-    } else if (rawText === SAMPLE_PUBLIK && newMode === 'ALFA') {
-      setRawText(SAMPLE_ALFA);
+
+    // Update sample text jika textarea masih berupa sample bawaan
+    const isCurrentSample =
+      rawText === SAMPLE_ALFA ||
+      rawText === SAMPLE_INDOMARCO ||
+      rawText === SAMPLE_PUBLIK;
+
+    if (isCurrentSample) {
+      if (newMode === "ALFA") setRawText(SAMPLE_ALFA);
+      else if (newMode === "INDOMARCO") setRawText(SAMPLE_INDOMARCO);
+      else if (newMode === "PUBLIK") setRawText(SAMPLE_PUBLIK);
     }
   };
 
   const handleGenerate = () => {
     if (!rawText.trim()) {
-      setOutput('');
+      setOutput("");
       setSummary(null);
       setWarnings([]);
-      setErrors(['Raw data tiket masih kosong. Silakan paste tiket terlebih dahulu.']);
+      setErrors([
+        "Raw data tiket masih kosong. Silakan paste tiket terlebih dahulu.",
+      ]);
       return;
     }
 
     let parseResult;
-    if (mode === 'ALFA') {
+    if (mode === "ALFA") {
       parseResult = parseAlfaTickets(rawText, shift);
+    } else if (mode === "INDOMARCO") {
+      parseResult = parseIndomarcoTickets(rawText, shift);
     } else {
       parseResult = parsePublikTickets(rawText, shift);
     }
@@ -101,8 +123,8 @@ export default function App() {
   };
 
   const handleClear = () => {
-    setRawText('');
-    setOutput('');
+    setRawText("");
+    setOutput("");
     setSummary(null);
     setWarnings([]);
     setErrors([]);
@@ -124,9 +146,9 @@ export default function App() {
             rawText={rawText}
             setRawText={setRawText}
             placeholder={
-              mode === 'ALFA'
-                ? 'Paste tiket ALFA di sini (mendukung multiple tickets)...'
-                : 'Paste tiket PUBLIK di sini (mendukung multiple tickets)...'
+              mode === "ALFA"
+                ? "Paste tiket ALFA di sini (mendukung multiple tickets)..."
+                : "Paste tiket PUBLIK di sini (mendukung multiple tickets)..."
             }
           />
 
