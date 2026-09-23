@@ -2,11 +2,6 @@ import { splitTicketBlocks, extractField, sanitizeStatus } from "./parserUtils";
 import { getIndonesianDate } from "../utils/dateUtils";
 import { buildRow } from "../utils/validation";
 
-/**
- * Parsing site Indomarco:
- * Contoh 1: BALI-TFDH -> Indomarco Bali TFDH
- * Contoh 2: BANJARMASIN-FFIV-VFC16 -> Indomarco Banjarmasin FFIV
- */
 export function parseIndomarcoSite(siteRaw) {
   if (!siteRaw) return '';
   const parts = siteRaw.split('-');
@@ -46,9 +41,10 @@ export function parseIndomarcoTickets(rawText, shift = "siang") {
 
     // 2. SID (Prioritas IBBC, fallback IPVPN)
     const sidIbbc = extractField(block, "SID\\s*IBBC");
-    const sidIpvpn = extractField(block, "SID\\s*IPVPN");
+    const sidIcl = extractField(block, "SID\\s*ICL");
+    const sidMsSdwan = extractField(block, "SID\\s*MS SDWAN");
     const sidGeneric = extractField(block, "SID");
-    const sid = sidIbbc || sidIpvpn || sidGeneric || "";
+    const sid = sidIbbc || sidMsSdwan || sidIcl || sidGeneric || "";
 
     if (!sid) {
       warningsForThisTicket.push("SID tidak ditemukan");
