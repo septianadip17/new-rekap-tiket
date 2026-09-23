@@ -1,18 +1,14 @@
 /* eslint-disable react/prop-types */
-const MODES = [
-  { id: 'ALFA', label: 'ALFA' },
-  { id: 'INDOMARCO', label: 'INDOMARCO' },
-  { id: 'PUBLIK', label: 'PUBLIK' },
-];
+import { MODE_OPTIONS } from '../constants/modes';
 
 export default function ModeSelector({ mode, setMode }) {
   return (
     <div className="flex flex-col gap-2">
       <label className="font-mono text-[11px] uppercase tracking-[0.15em] text-slate-500">
-        // mode_sumber
+        {'// mode_sumber'}
       </label>
       <div className="grid grid-cols-3 gap-1.5 rounded-xl border border-edge bg-void/60 p-1.5">
-        {MODES.map((m) => {
+        {MODE_OPTIONS.map((m) => {
           const active = mode === m.id;
           return (
             <button

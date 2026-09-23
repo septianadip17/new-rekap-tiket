@@ -1,7 +1,16 @@
-import { splitTicketBlocks, extractField } from './parserUtils';
+import {
+  splitTicketBlocks,
+  extractField,
+  sanitizeStatus,
+  buildTicketLabel,
+  buildParseResult,
+} from './parserUtils';
 import { getIndonesianDate } from '../utils/dateUtils';
 import { buildRow } from '../utils/validation';
 
+/**
+ * Mengubah SITE mentah menjadi "Alfa <kode 4 digit>" (mis. "Alfa Q213").
+ */
 export function parseAlfaSite(siteRaw) {
   if (!siteRaw) return '';
   const parts = siteRaw.split('-');
@@ -10,15 +19,6 @@ export function parseAlfaSite(siteRaw) {
     return `Alfa ${code}`;
   }
   return '';
-}
-
-export function sanitizeStatus(val) {
-  if (!val) return '';
-  const trimmed = val.trim();
-  if (trimmed === '-' || trimmed === '--' || trimmed.toLowerCase() === 'null') {
-    return '';
-  }
-  return trimmed;
 }
 
 export function parseAlfaTickets(rawText, shift = 'siang') {
@@ -34,36 +34,23 @@ export function parseAlfaTickets(rawText, shift = 'siang') {
     const ticketNum = index + 1;
     const warningsForThisTicket = [];
 
-    // 1. Ekstraksi ID Tiket
     const ticketId = extractField(block, 'ID\\s*TIKET') || '';
-    const ticketLabel = ticketId ? `Tiket ${ticketId}` : `Tiket #${ticketNum}`;
+    const ticketLabel = buildTicketLabel(ticketId, ticketNum);
+    if (!ticketId) warningsForThisTicket.push('ID TIKET kosong');
 
-    if (!ticketId) {
-      warningsForThisTicket.push('ID TIKET kosong');
-    }
-
-    // 2. Ekstraksi SID (Prioritas: IBBC, fallback: IPVPN)
     const sidIbbc = extractField(block, 'SID\\s*IBBC');
     const sidIpvpn = extractField(block, 'SID\\s*IPVPN');
-    let sid = sidIbbc || sidIpvpn || '';
+    const sid = sidIbbc || sidIpvpn || '';
+    if (!sid) warningsForThisTicket.push('SID tidak ditemukan');
 
-    if (!sid) {
-      warningsForThisTicket.push('SID tidak ditemukan');
-    }
-
-    // 3. Ekstraksi SITE
     const siteRaw = extractField(block, 'SITE');
     const namaAlfa = parseAlfaSite(siteRaw);
-    if (!namaAlfa) {
-      warningsForThisTicket.push('SITE kosong atau kode toko tidak sesuai');
-    }
+    if (!namaAlfa) warningsForThisTicket.push('SITE kosong atau kode toko tidak sesuai');
 
-    // 4. Ekstraksi Pengecekan (Kosong diperbolehkan, tanpa warning)
     const cpe = sanitizeStatus(extractField(block, 'Pengecekan\\s*CPE'));
     const spe = sanitizeStatus(extractField(block, 'Pengecekan\\s*SPE'));
     const upe = sanitizeStatus(extractField(block, 'Pengecekan\\s*UPE'));
 
-    // Struktur 14 Kolom ALFA
     const rowCells = [
       sid,                              // 1: SID
       namaAlfa,                         // 2: Nama Alfa
@@ -78,13 +65,11 @@ export function parseAlfaTickets(rawText, shift = 'siang') {
       '',                               // 11: kosong
       ticketId,                         // 12: ID Tiket
       shift,                            // 13: Shift
-      currentDate                       // 14: Tanggal
+      currentDate,                      // 14: Tanggal
     ];
 
     try {
-      const tsvLine = buildRow(rowCells, ticketLabel);
-      tsvRows.push(tsvLine);
-
+      tsvRows.push(buildRow(rowCells, ticketLabel));
       results.push({
         id: ticketLabel,
         sid,
@@ -96,30 +81,22 @@ export function parseAlfaTickets(rawText, shift = 'siang') {
         shift,
         date: currentDate,
         status: warningsForThisTicket.length > 0 ? 'WARNING' : 'SUCCESS',
-        warnings: warningsForThisTicket
+        warnings: warningsForThisTicket,
       });
     } catch (err) {
       errors.push(`${ticketLabel}: ${err.message}`);
     }
 
     if (warningsForThisTicket.length > 0) {
-      warnings.push({
-        ticket: ticketLabel,
-        messages: warningsForThisTicket
-      });
+      warnings.push({ ticket: ticketLabel, messages: warningsForThisTicket });
     }
   });
 
-  return {
-    rawOutput: tsvRows.join('\n'),
+  return buildParseResult({
+    tsvRows,
     results,
-    summary: {
-      total: blocks.length,
-      success: results.filter((r) => r.status === 'SUCCESS').length,
-      warning: warnings.length,
-      error: errors.length
-    },
     warnings,
-    errors
-  };
+    errors,
+    total: blocks.length,
+  });
 }

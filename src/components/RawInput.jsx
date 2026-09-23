@@ -8,7 +8,7 @@ export default function RawInput({ rawText, setRawText, placeholder }) {
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
         <label className="font-mono text-[11px] uppercase tracking-[0.15em] text-slate-500">
-          // raw_ticket
+          {'// raw_ticket'}
         </label>
         <span className="font-mono text-[11px] text-slate-500">
           {lineCount > 0 ? `${lineCount} lines` : 'empty'}

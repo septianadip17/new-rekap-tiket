@@ -1,18 +1,14 @@
 /* eslint-disable react/prop-types */
-const SHIFTS = [
-  { id: 'pagi', label: 'Pagi' },
-  { id: 'siang', label: 'Siang' },
-  { id: 'malam', label: 'Malam' },
-];
+import { SHIFT_OPTIONS } from '../constants/modes';
 
 export default function ShiftSelector({ shift, setShift }) {
   return (
     <div className="flex flex-col gap-2">
       <label className="font-mono text-[11px] uppercase tracking-[0.15em] text-slate-500">
-        // shift_petugas
+        {'// shift_petugas'}
       </label>
       <div className="grid grid-cols-3 gap-1.5 rounded-xl border border-edge bg-void/60 p-1.5">
-        {SHIFTS.map((s) => {
+        {SHIFT_OPTIONS.map((s) => {
           const active = shift === s.id;
           return (
             <button
