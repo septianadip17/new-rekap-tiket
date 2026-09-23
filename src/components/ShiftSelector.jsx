@@ -5,7 +5,7 @@ export default function ShiftSelector({ shift, setShift }) {
   return (
     <div className="flex flex-col gap-2">
       <label className="font-mono text-[11px] uppercase tracking-[0.15em] text-slate-500">
-        {'// shift_petugas'}
+        {'shift'}
       </label>
       <div className="grid grid-cols-3 gap-1.5 rounded-xl border border-edge bg-void/60 p-1.5">
         {SHIFT_OPTIONS.map((s) => {

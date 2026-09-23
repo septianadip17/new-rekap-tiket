@@ -11,14 +11,14 @@ export default function Header() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-lg font-bold tracking-tight text-white">
-              TICKET<span className="text-gradient">REKAP</span>
+              Rekap<span className="text-gradient">TiketMSR</span>
             </h1>
             <span className="rounded-md border border-cyan-400/20 bg-cyan-400/5 px-1.5 py-0.5 font-mono text-[10px] font-medium text-cyan-400">
               v1.0
             </span>
           </div>
           <p className="mt-0.5 font-mono text-xs text-slate-500">
-            raw alarm &rarr; excel-ready pipeline
+            target pershift &rarr; 40 tiket
           </p>
         </div>
       </div>
@@ -26,11 +26,11 @@ export default function Header() {
       <div className="flex flex-wrap items-center gap-2">
         <span className="inline-flex items-center gap-1.5 rounded-lg border border-cyan-400/20 bg-cyan-400/5 px-2.5 py-1.5 font-mono text-[11px] text-cyan-300">
           <Zap className="h-3 w-3" />
-          14 col
+          Tinggal Copas Aje
         </span>
         <span className="inline-flex items-center gap-1.5 rounded-lg border border-violet-400/20 bg-violet-400/5 px-2.5 py-1.5 font-mono text-[11px] text-violet-300">
           <ShieldCheck className="h-3 w-3" />
-          client-side
+          Beres Dah
         </span>
       </div>
     </header>

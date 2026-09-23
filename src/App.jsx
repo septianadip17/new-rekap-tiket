@@ -128,7 +128,7 @@ export default function App() {
                     htmlFor="report-date"
                     className="font-mono text-[11px] uppercase tracking-[0.15em] text-slate-500"
                   >
-                    {'// tanggal_rekap'}
+                    {'tanggal'}
                   </label>
                   <input
                     id="report-date"
@@ -193,7 +193,7 @@ export default function App() {
 
         <footer className="mt-10 flex items-center justify-center gap-2 border-t border-edge pt-5 font-mono text-[11px] uppercase tracking-[0.15em] text-slate-600">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-          in-memory pipeline &bull; data tidak keluar browser
+          semangat dah ya &bull; semangat semangat semangat
         </footer>
       </div>
     </div>
